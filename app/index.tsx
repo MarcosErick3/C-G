@@ -1,11 +1,10 @@
 
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'react-native-gesture-handler';
+import { StyleSheet, View, Text } from 'react-native';
+
 
 
 export default function HomeScreen() {
   return (
-
     <View style={styles.container}>
       <Text style={styles.texto}>Home Screen</Text>
     </View>
