@@ -1,35 +1,61 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#1C1C1E',
         justifyContent: 'center',
+        paddingHorizontal: 24,
+        width: '100%',
+        height: '100%',
+    },
+    inner: {
         alignItems: 'center',
-        padding: 20,
+        justifyContent: 'center',
     },
-
-    text: {
-        fontSize: 50,
-        fontFamily: 'Arial',
+    title: {
+        color: '#fff',
+        fontSize: 32,
         fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 150,
+        textAlign: 'center',
+        marginBottom: 40,
     },
-    boxTop: {
-        height: 200,
-        backgroundColor: 'red',
-        width: '100%',
+    input: {
+        width: 300,
+        borderWidth: 1,
+        borderColor: '#fff',
+        borderRadius: 8,
+        padding: 14,
+        color: '#fff',
+        marginBottom: 12,
     },
+    button: {
+        backgroundColor: '#333',
+        paddingVertical: 14,
+        paddingHorizontal: 40,
+        borderRadius: 10,
+        marginTop: 30,
+        marginBottom: 20,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16,
+        textAlign: 'center',
+    },
+    loginText: {
+        color: '#fff',
+        fontSize: 14,
+        textAlign: 'center',
+    },
+    loginLink: {
+        fontWeight: 'bold',
+    },
+    error: {
+        color: '#FF3B30',
+        fontSize: 12,
+        marginBottom: 5,
+    },
+})
 
-    boxMid: {
-      height: 200,
-        backgroundColor: 'blue',
-        width: '100%',
-        marginTop: 20,
-    },
-
-    boxBottom: {
-        marginTop: 20,
-        backgroundColor: '',
-    },
-});
+export default styles;
