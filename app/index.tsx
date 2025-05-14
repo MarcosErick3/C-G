@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import TelaDeLogin from '@/src/pages/telaDeLogin';
 
 
-export default function App() {
+export default function Index() {
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />

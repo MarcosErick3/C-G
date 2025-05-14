@@ -1,8 +1,9 @@
-// app/cadastro.tsx
+// app/login/index.tsx
 import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import styles from './style'; 
+import { useRouter } from 'expo-router'
+import styles from './style'
 
 const schema = Yup.object().shape({
   usuario: Yup.string().required('Campo obrigatório'),
@@ -10,6 +11,8 @@ const schema = Yup.object().shape({
 })
 
 export default function Login() {
+  const router = useRouter()
+  
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -22,7 +25,9 @@ export default function Login() {
           initialValues={{ usuario: '', senha: '' }}
           validationSchema={schema}
           onSubmit={(values) => {
-            Alert.alert('Cadastro realizado!', JSON.stringify(values, null, 2))
+            // Aqui você pode fazer login com Firebase ou outro
+            Alert.alert('Login feito com sucesso!', JSON.stringify(values, null, 2))
+            console.log('Login feito com sucesso!', values)
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -56,9 +61,9 @@ export default function Login() {
                 <Text style={styles.buttonText}>Entrar</Text>
               </TouchableOpacity>
 
-              <Text style={styles.loginText}>
-                Não tem uma conta? <Text style={styles.cadastroLink}>Fazer cadastro</Text>
-              </Text>
+              <TouchableOpacity onPress={() => router.push('../telaDeCadastro/')}>
+                <Text style={styles.cadastroText}>Não tem conta? Cadastre-se</Text>
+              </TouchableOpacity>
             </>
           )}
         </Formik>
@@ -66,4 +71,3 @@ export default function Login() {
     </KeyboardAvoidingView>
   )
 }
-

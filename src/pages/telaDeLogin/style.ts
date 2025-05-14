@@ -43,15 +43,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
     },
-    loginText: {
+    cadastroText: {
         color: '#fff',
         fontSize: 14,
         textAlign: 'center',
-    },
-    loginLink: {
-        fontWeight: 'bold',
-    },
-    cadastroLink: {
         fontWeight: 'bold',
     },
     error: {
