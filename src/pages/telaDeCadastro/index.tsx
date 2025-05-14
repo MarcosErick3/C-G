@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, P
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'expo-router'
-import styles from './style'
+import styles from './styles'
 
 const schema = Yup.object().shape({
     nome: Yup.string().required('Campo obrigatório'),

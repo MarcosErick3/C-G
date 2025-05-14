@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import TelaDeLogin from '@/src/pages/telaDeLogin';
 
 
+
 export default function Index() {
     return (
         <View style={styles.container}>
