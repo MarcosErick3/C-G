@@ -9,7 +9,7 @@ const schema = Yup.object().shape({
   senha: Yup.string().min(6, 'Mínimo 6 caracteres').required('Campo obrigatório'),
 })
 
-export default function Cadastro() {
+export default function Login() {
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -53,11 +53,11 @@ export default function Cadastro() {
               )}
 
               <TouchableOpacity style={styles.button} onPress={handleSubmit as any}>
-                <Text style={styles.buttonText}>Cadastrar</Text>
+                <Text style={styles.buttonText}>Entrar</Text>
               </TouchableOpacity>
 
               <Text style={styles.loginText}>
-                Já tem uma conta? <Text style={styles.loginLink}>Fazer login</Text>
+                Não tem uma conta? <Text style={styles.cadastroLink}>Fazer cadastro</Text>
               </Text>
             </>
           )}

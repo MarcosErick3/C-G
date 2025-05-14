@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
     loginLink: {
         fontWeight: 'bold',
     },
+    cadastroLink: {
+        fontWeight: 'bold',
+    },
     error: {
         color: '#FF3B30',
         fontSize: 12,
