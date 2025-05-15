@@ -61,7 +61,7 @@ export default function Login() {
                 <Text style={styles.buttonText}>Entrar</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => router.push('../telaDeCadastro/')}>
+              <TouchableOpacity onPress={() => router.push('../telaDeCadastro')}>
                 <Text style={styles.cadastroText}>Não tem conta? Cadastre-se</Text>
               </TouchableOpacity>
             </>
