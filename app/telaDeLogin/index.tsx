@@ -1,47 +1,56 @@
-// app/login/index.tsx
+// app/telaDeLogin/index.tsx
 import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'expo-router'
 import styles from './styles'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../DB/fireBase'  
 
 const schema = Yup.object().shape({
-  usuario: Yup.string().required('Campo obrigatório'),
-  senha: Yup.string().min(6, 'Mínimo 6 caracteres').required('Campo obrigatório'),
+  email: Yup.string().email('Email inválido').required('Campo obrigatório'),
+  senha: Yup.string().required('Campo obrigatório')
 })
 
 export default function Login() {
   const router = useRouter()
-  
+
+  const handleLogin = async (values: any) => {
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.senha)
+      Alert.alert('Login feito com sucesso!')
+      router.push('/layout') 
+    } catch (error: any) {
+      console.log('Erro ao logar:', error.message)
+      Alert.alert('Erro', 'Email ou senha inválidos.')
+    }
+  }
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.inner}>
-        <Text style={styles.title}>Bem-Vindo</Text>
+        <Text style={styles.title}>Login</Text>
 
         <Formik
-          initialValues={{ usuario: '', senha: '' }}
+          initialValues={{ email: '', senha: '' }}
           validationSchema={schema}
-          onSubmit={(values) => {
-            // Aqui você pode fazer login com Firebase ou outro
-            Alert.alert('Login feito com sucesso!', JSON.stringify(values, null, 2))
-            console.log('Login feito com sucesso!', values)
-          }}
+          onSubmit={handleLogin}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <>
               <TextInput
-                placeholder="Nome de usuário, e-mail ou número de celular"
+                placeholder="E-mail"
                 placeholderTextColor="#aaa"
                 style={styles.input}
-                onChangeText={handleChange('usuario')}
-                onBlur={handleBlur('usuario')}
-                value={values.usuario}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                value={values.email}
               />
-              {touched.usuario && errors.usuario && (
-                <Text style={styles.error}>{errors.usuario}</Text>
+              {touched.email && errors.email && (
+                <Text style={styles.error}>{errors.email}</Text>
               )}
 
               <TextInput
@@ -61,7 +70,7 @@ export default function Login() {
                 <Text style={styles.buttonText}>Entrar</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => router.push('../telaDeCadastro')}>
+              <TouchableOpacity onPress={() => router.push('/telaDeCadastro')}>
                 <Text style={styles.cadastroText}>Não tem conta? Cadastre-se</Text>
               </TouchableOpacity>
             </>

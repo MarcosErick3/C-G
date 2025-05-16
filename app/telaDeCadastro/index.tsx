@@ -4,15 +4,35 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'expo-router'
 import styles from './styles'
+import { auth } from '../../DB/fireBase'  // Importa o auth aqui
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 
 const schema = Yup.object().shape({
     nome: Yup.string().required('Campo obrigatório'),
     email: Yup.string().email('Email inválido').required('Campo obrigatório'),
     senha: Yup.string().min(6, 'Mínimo 6 caracteres').required('Campo obrigatório'),
+    senhaConfirmacao: Yup.string()
+        .oneOf([Yup.ref('senha'), undefined], 'As senhas não coincidem')
+        .required('Campo obrigatório'),
 })
 
 export default function Cadastro() {
     const router = useRouter()
+
+    const handleCadastro = async (values: any) => {
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.senha);
+            const user = userCredential.user;
+
+            await updateProfile(user, { displayName: values.nome });
+
+            Alert.alert('Sucesso!', 'Cadastro feito com sucesso!');
+            router.push('/telaDeLogin');
+        } catch (error: any) {
+            console.log('Erro ao cadastrar:', error.message);
+            Alert.alert('Erro', `Não foi possível fazer o cadastro: ${error.message}`);
+        }
+    };
 
     return (
         <KeyboardAvoidingView
@@ -23,12 +43,9 @@ export default function Cadastro() {
                 <Text style={styles.title}>Criar Conta</Text>
 
                 <Formik
-                    initialValues={{ nome: '', email: '', senha: '' }}
+                    initialValues={{ nome: '', email: '', senha: '', senhaConfirmacao: '' }}
                     validationSchema={schema}
-                    onSubmit={(values) => {
-                        Alert.alert('Cadastro feito com sucesso!', JSON.stringify(values, null, 2))
-                        console.log('Usuário cadastrado:', values)
-                    }}
+                    onSubmit={handleCadastro} // Usa a função que cadastra no Firebase
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                         <>
@@ -68,6 +85,19 @@ export default function Cadastro() {
                             />
                             {touched.senha && errors.senha && (
                                 <Text style={styles.error}>{errors.senha}</Text>
+                            )}
+
+                            <TextInput
+                                placeholder="Confirme sua senha"
+                                placeholderTextColor="#aaa"
+                                secureTextEntry
+                                style={styles.input}
+                                onChangeText={handleChange('senhaConfirmacao')}
+                                onBlur={handleBlur('senhaConfirmacao')}
+                                value={values.senhaConfirmacao}
+                            />
+                            {touched.senhaConfirmacao && errors.senhaConfirmacao && (
+                                <Text style={styles.error}>{errors.senhaConfirmacao}</Text>
                             )}
 
                             <TouchableOpacity style={styles.button} onPress={handleSubmit as any}>
