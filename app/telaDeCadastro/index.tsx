@@ -1,11 +1,11 @@
-// app/telaDeCadastro/index.tsx
 import { View, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { useRouter } from 'expo-router'
 import styles from './styles'
-import { auth } from '../../DB/fireBase'  // Importa o auth aqui
+import { auth } from '../../DB/fireBase'
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { useState } from 'react'
 
 const schema = Yup.object().shape({
     nome: Yup.string().required('Campo obrigatório'),
@@ -17,6 +17,7 @@ const schema = Yup.object().shape({
 })
 
 export default function Cadastro() {
+    const [erroFirebase, setErroFirebase] = useState('');
     const router = useRouter()
 
     const handleCadastro = async (values: any) => {
@@ -29,10 +30,29 @@ export default function Cadastro() {
             Alert.alert('Sucesso!', 'Cadastro feito com sucesso!');
             router.push('/telaDeLogin');
         } catch (error: any) {
-            console.log('Erro ao cadastrar:', error.message);
-            Alert.alert('Erro', `Não foi possível fazer o cadastro: ${error.message}`);
+            console.error('Erro ao cadastrar:', error);
+            const firebaseError = error?.code;
+
+            switch (firebaseError) {
+                case 'auth/email-already-in-use':
+                    setErroFirebase('Este e-mail já está cadastrado. Faça login ou use outro e-mail.');
+                    break;
+                case 'auth/invalid-email':
+                    setErroFirebase('E-mail inválido. Verifique e tente novamente.');
+                    break;
+                case 'auth/weak-password':
+                    setErroFirebase('A senha deve ter no mínimo 6 caracteres.');
+                    break;
+                case 'auth/network-request-failed':
+                    setErroFirebase('Falha na conexão. Verifique sua internet.');
+                    break;
+                default:
+                    setErroFirebase(error?.message || 'Erro inesperado. Tente novamente.');
+                    break;
+            }
         }
     };
+
 
     return (
         <KeyboardAvoidingView
@@ -45,7 +65,7 @@ export default function Cadastro() {
                 <Formik
                     initialValues={{ nome: '', email: '', senha: '', senhaConfirmacao: '' }}
                     validationSchema={schema}
-                    onSubmit={handleCadastro} // Usa a função que cadastra no Firebase
+                    onSubmit={handleCadastro}
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                         <>
@@ -61,6 +81,7 @@ export default function Cadastro() {
                                 <Text style={styles.error}>{errors.nome}</Text>
                             )}
 
+
                             <TextInput
                                 placeholder="E-mail"
                                 placeholderTextColor="#aaa"
@@ -73,6 +94,11 @@ export default function Cadastro() {
                             {touched.email && errors.email && (
                                 <Text style={styles.error}>{errors.email}</Text>
                             )}
+
+                            {erroFirebase !== '' && (
+                                <Text style={[styles.error, { marginTop: 10 }]}>{erroFirebase}</Text>
+                            )}
+
 
                             <TextInput
                                 placeholder="Senha"

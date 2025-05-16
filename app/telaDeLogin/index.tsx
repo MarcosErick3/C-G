@@ -29,7 +29,7 @@ export default function Login() {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} 
     >
       <View style={styles.inner}>
         <Text style={styles.title}>Login</Text>
