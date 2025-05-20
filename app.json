@@ -34,8 +34,12 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
+    "extra": {
+      "expoClientId": "380473543117-jk8s14qmtdu3idjghtg7ek60da4gqgeu.apps.googleusercontent.com"
+    },
     "experiments": {
       "typedRoutes": true
     }
